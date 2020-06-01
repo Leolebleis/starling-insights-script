@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@400;800&display=swap");
+
+      * {
+        margin: 0;
+        order: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Catamaran", sans-serif;
+        background-color: #d8dbdb;
+        font-size: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2%;
+        color: #565859;
+      }
+
+      #wrapper {
+        background: #f6faff;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      .one-col {
+        padding: 2%;
+      }
+
+      h1 {
+        letter-spacing: 1%;
+      }
+
+      p {
+        text-align: justify;
+      }
+
+      .line {
+        clear: both;
+        height: 2px;
+        background-color: #e3e9e9;
+        margin: 4% auto;
+        width: 96%;
+      }
+
+      .two-col {
+        float: left;
+        width: 46%;
+        padding: 2%;
+      }
+
+      .contact {
+        text-align: center;
+        padding-bottom: 3%;
+      }
+
+      a {
+        color: #607cc3;
+        text-decoration: none;
+      }
+
+      @media (max-width: 600px) {
+        .two-col {
+          width: 97%;
+        }
+      }
+
+      .header-col {
+        float: right;
+        width: 65%;
+        padding: 2%;
+      }
+
+      .header-image {
+        float: left;
+        width: 25%;
+        padding: 2%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="banner">
+        <img src="https://i.imgur.com/dxTPwJ1.png" alt="illuminati header" />
+      </div>
+      <div class="header-image">
+        <img
+          src="https://quickchart.io/chart?c=
+            {type:'radialGauge',data:{datasets:[{data:[${percent}],backgroundColor:'rgba(96,124,195,1)'}]},
+            options:{centerArea:{text:'${this_months_net_spend_percent}'}}}"
+          alt="Net spend radial gauge"
+        />
+      </div>
+
+      <div class="header-col">
+        <h1>${title}</h1>
+        <p>
+          Compared to last month, you saved ${current_month_savings}. You saved
+          £${this_months_net_spend} this month, and £${sum_net_spend} since
+          ${first_date}. 🤑
+        </p>
+        <p>Your current balance is ${balance}. Don't spend it all at once!</p>
+        <p>
+          You're saving for ${savings_goal}: only £${savings_goal_amount_left}
+          to go! :)
+        </p>
+      </div>
+      <div class="line"></div>
+      <div class="two-col">
+        <h2>Net spend over time</h2>
+        <img
+          src="https://quickchart.io/chart?width=500&height=300&c=
+            {type:'line',data:{labels:${net_spend_labels}, 
+            datasets:[{label:'Net Spend',data:${net_spend_data}, fill:false, borderColor:'rgba(96, 195, 170, 1)'}]}}"
+          alt="Net spend over time"
+        />
+        <p>
+          Net spend is the net of any money going in or out of my current
+          account. This includes everything: bills, rent, deliveroos, video
+          games purchases... Everything.
+        </p>
+      </div>
+      <div class="two-col">
+        <h2>Highest expense category</h2>
+        <img
+          src="https://quickchart.io/chart?width=500&height=300&c=
+          {type:'bar', 
+          data: { labels: ${highest_spend_category_per_period_labels}, 
+          datasets: [{ label: 'Spending per category',
+          backgroundColor:'rgba(62, 149, 205, 1)',
+          data: ${highest_spend_category_per_period_data}, }] }}"
+          alt="Highest spend category over time"
+        />
+        <p>
+          This is the category for which you've spent the most money. If you see
+          this reducing over time, then that's great! You're controlling
+          yourself more. If not... well, it happens.
+        </p>
+      </div>
+      <div class="two-col">
+        <h2>Where you spent the most</h2>
+        <img alt="counter party where I've spent the most this month" />
+        <p>
+          This is the places where you've spent the most money this month. Maybe
+          try to go easy on the deliveroos if you can?
+        </p>
+      </div>
+      <div class="two-col">
+        <h2>Spend by category this month</h2>
+        <img alt="Spend by category this month" />
+        <p>
+          This is how much you've spent for every category this month. Try to
+          see if you can save on those bigger categories!
+        </p>
+      </div>
+
+      <div class="line"></div>
+
+      <p class="contact">
+        <a href="https://leolebleis.com/" target="_blank"
+          >Made by Leo Le Bleis.</a
+        >
+        <br />
+        <a
+          href="https://github.com/Leolebleis/starling-insights-api"
+          target="_blank"
+          >Check out the repo!</a
+        >
+      </p>
+    </div>
+    <!-- End of wrapper -->
+  </body>
+</html>
