@@ -1,29 +1,18 @@
 __author__ = "Leo Le Bleis"
 __version__ = "0.1.0"
 
-import requests
 import operator
-from datetime import datetime
-import calendar
 from gmail.email_service import *
 from enum import Enum
+from client.starling_client import *
 
-separator = "\n------------------------\n"
-heroku = "https://starling-insights-api.herokuapp.com"
-accounts_path = "/accounts/c4602b9b-c955-4810-8d4c-f46772c0c88a"
-
-headers = {
-    "Authorization": open("starling_credentials.txt", "r").read()
-}
-
-today = datetime.today()
 subject_line = "Spending breakdown | " + str(calendar.month_name[today.month])
 
 
 def main():
     # Main entry point of the app
     print(separator)
-    data = get_spending_category_insight_request()
+    data = get_spending_category_insight_request_between()
 
     data.sort(key=operator.itemgetter("period"))
 
@@ -34,13 +23,15 @@ def main():
         "spends_by_category": spending_by_category,
         "highest_spend_category_per_period": get_highest_spend_category_per_period(spending_by_category),
         "balance": get_balance_request(),
-        "spends_per_category_for_this_month": get_spends_per_category_for_period(spending_by_category,str(today.year) +
-                                                                                 "-" + str(today.month).zfill(2))
+        "spends_per_category_for_this_month": get_spends_per_category_for_period(spending_by_category, str(today.year) +
+                                                                                 "-" + str(today.month).zfill(2)),
+        "counter_party_current_month": get_spending_counter_party_insight_request(),
+        "savings_goals": get_savings_goals()
     }
 
     html_message = create_html_body(data)
 
-    message = create_message("me", "leo.lebleis@gmail.com", subject_line, html_message)
+    message = create_message("me", "leo.lebleis@gmail.com", subject_line, html_message, attachment=get_statement_since_start_of_month())
     send_email(get_service(), "me", message)
 
 
@@ -112,37 +103,6 @@ def get_net_spends(data):
             {"net_spend": 0 - item['netSpend'], "period": item['period']})
 
     return net_spends
-
-
-def get_balance_request():
-    account_balance_path = "https://api.starlingbank.com/api/v2" + accounts_path + "/balance"
-
-    print(str(today) + ": Making request to: " + account_balance_path)
-
-    r = requests.get(account_balance_path, headers=headers)
-    print("API Response status: " + str(r.status_code) + separator)
-
-    return json.loads(r.text)
-
-
-def get_spending_category_insight_request():
-    category_insight_path = "/spending-insights/spending-category/between-two-dates"
-
-    print(str(today) + ": Making request to: " + heroku + accounts_path + category_insight_path)
-
-    datem = datetime(today.year, today.month, today.day)
-
-    params = {
-        "firstMonth": "November",
-        "firstYear": 2019,
-        "secondMonth": calendar.month_name[datem.month],
-        "secondYear": datem.year
-    }
-
-    r = requests.get(heroku + accounts_path + category_insight_path, headers=headers, params=params)
-
-    print("API Response status: " + str(r.status_code) + separator)
-    return json.loads(r.text)
 
 
 if __name__ == "__main__":
