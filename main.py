@@ -64,14 +64,14 @@ def get_spends_per_category_for_period(data, period):
 
 def get_highest_spend_category_per_period(data):
     period_list = get_category_spends(data)
+    data = [i for i in data if i[1] != "HOME"]
 
     min_spends = []
 
     for period in period_list:
         sorted_list = [a for a in data if a[2] == period]
-
         min_spend = min(i[0] for i in sorted_list)
-        min_spends.append([i for i in sorted_list if i[0] == min_spend])
+        min_spends.append([i for i in sorted_list if i[0] == min_spend][0])
 
     return min_spends
 
